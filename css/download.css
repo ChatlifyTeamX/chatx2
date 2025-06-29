@@ -7,6 +7,13 @@
 
 html {
     scroll-behavior: smooth;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
 }
 
 /* Download Hero Bölümü Düzenlemeleri */
