@@ -1,0 +1,536 @@
+/* 
+  Profil Modal Bileşeni Stilleri
+  - #profile-modal kapsamında global çakışmaları önlemek için.
+*/
+
+:root {
+    --profile-gradient-1: linear-gradient(135deg, #6a11cb, #2575fc);
+    --profile-gradient-2: linear-gradient(135deg, #00b09b, #96c93d);
+    --profile-gradient-3: linear-gradient(135deg, #f46b45, #eea849);
+    --profile-gradient-4: linear-gradient(135deg, #614385, #516395);
+    --profile-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --profile-radius: 16px;
+    --profile-section-radius: 12px;
+    --profile-item-radius: 8px;
+    --profile-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Overlay: Modal arkasındaki yarı saydam arkaplan */
+#profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#profile-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal İçeriği: Asıl kutu */
+#profile-modal .modal-container {
+    background-color: var(--main-bg);
+    padding: 0;
+    border-radius: var(--profile-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: var(--profile-shadow);
+    width: 100%;
+    max-width: 900px;
+    /* Yatay düzen için genişletildi */
+    position: relative;
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.4s ease;
+    overflow: hidden;
+    max-height: 85vh;
+}
+
+#profile-modal.active .modal-container {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Modal Başlık */
+#profile-modal .modal-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--profile-gradient-1);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#profile-modal .modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+#profile-modal .modal-header .close-modal-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: var(--profile-transition);
+}
+
+#profile-modal .modal-header .close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Modal İçeriği */
+#profile-modal .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(85vh - 70px);
+}
+
+/* Yatay Düzen */
+#profile-modal .profile-horizontal-layout {
+    display: flex;
+    gap: 24px;
+}
+
+/* Sol Sütun */
+#profile-modal .profile-left-column {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--background-secondary);
+    border-radius: var(--profile-section-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+}
+
+/* Avatar Bölümü */
+#profile-modal .profile-avatar-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#profile-modal .profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: var(--background-tertiary);
+    position: relative;
+    margin: 0 auto;
+}
+
+#profile-modal .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+#profile-modal .profile-avatar:hover img {
+    transform: scale(1.05);
+}
+
+#profile-modal .status-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 3px solid var(--background-secondary);
+    background-color: var(--text-muted);
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+#profile-modal .status-indicator.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+    animation: pulseOnline 2s infinite;
+}
+
+#profile-modal .status-indicator.offline {
+    background-color: var(--text-muted);
+}
+
+@keyframes pulseOnline {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+/* Kullanıcı Adı ve Etiket */
+#profile-modal .profile-name-container {
+    margin-bottom: 12px;
+}
+
+#profile-modal .profile-username {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+    word-break: break-word;
+}
+
+#profile-modal .profile-tag {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+/* Durum */
+#profile-modal .profile-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    background-color: var(--background-tertiary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+#profile-modal .profile-status.online {
+    background-color: rgba(46, 204, 113, 0.15);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+#profile-modal .profile-status.offline {
+    background-color: rgba(189, 195, 199, 0.15);
+    border: 1px solid rgba(189, 195, 199, 0.3);
+}
+
+#profile-modal .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+#profile-modal .status-dot.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+    animation: smallPulse 2s infinite;
+}
+
+@keyframes smallPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 5px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+#profile-modal .status-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Ana Butonlar */
+#profile-modal .profile-primary-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#profile-modal .primary-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: var(--profile-item-radius);
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--profile-transition);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+#profile-modal .primary-action-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+#profile-modal .primary-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#profile-modal .primary-action-btn:hover:before {
+    transform: scale(2);
+    opacity: 1;
+}
+
+#profile-modal .primary-action-btn:active {
+    transform: translateY(1px);
+}
+
+#profile-modal .primary-action-btn i,
+#profile-modal .primary-action-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#profile-modal .message-btn {
+    background: var(--profile-gradient-1);
+}
+
+#profile-modal .call-btn {
+    background: var(--profile-gradient-2);
+}
+
+/* Sağ Sütun */
+#profile-modal .profile-right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+}
+
+/* Profil Bölümleri */
+#profile-modal .profile-section {
+    background-color: var(--background-secondary);
+    border-radius: var(--profile-section-radius);
+    overflow: hidden;
+    border: 1px solid var(--divider-color);
+    transition: var(--profile-transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#profile-modal .profile-section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color-muted);
+}
+
+#profile-modal .section-header {
+    padding: 14px 16px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--divider-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#profile-modal .section-header i {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+#profile-modal .section-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#profile-modal .section-content {
+    padding: 16px;
+}
+
+/* Rozetler */
+#profile-modal .badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+#profile-modal .badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+#profile-modal .badge-placeholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: var(--background-tertiary);
+    border: 2px dashed var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+}
+
+#profile-modal .badge-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+#profile-modal .badge-item.earned .badge-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--profile-gradient-4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hakkında */
+#profile-modal .bio {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Üyelik Bilgileri */
+#profile-modal .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+}
+
+#profile-modal .info-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+#profile-modal .info-value {
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* İkincil Butonlar */
+#profile-modal .secondary-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: auto;
+}
+
+#profile-modal .secondary-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: var(--profile-item-radius);
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--profile-transition);
+    background-color: var(--background-tertiary);
+    color: var(--text-secondary);
+}
+
+#profile-modal .secondary-action-btn:hover {
+    transform: translateY(-2px);
+    color: var(--text-color);
+    background-color: var(--background-tertiary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#profile-modal .remove-friend-btn:hover {
+    color: #e74c3c;
+}
+
+#profile-modal .block-btn:hover {
+    color: #e74c3c;
+}
+
+/* Duyarlı Tasarım Ayarlamaları */
+@media (max-width: 900px) {
+    #profile-modal .modal-container {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    #profile-modal .profile-horizontal-layout {
+        flex-direction: column;
+    }
+
+    #profile-modal .profile-left-column {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    #profile-modal .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    #profile-modal .modal-body {
+        padding: 16px;
+    }
+
+    #profile-modal .secondary-actions {
+        grid-template-columns: 1fr;
+    }
+
+    #profile-modal .info-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,116 @@
+/* Dashboard Ana Stil Dosyası */
+
+:root {
+    /* Değişkenler */
+    --dm-sidebar-width: 240px;
+    --sponsor-sidebar-width: 300px;
+    --header-height: 48px;
+    --footer-height: 52px;
+    --animation-speed: 0.2s;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+
+    /* Renkler */
+    --server-bg: #161b2e;
+    --dm-bg: #1a2036;
+    --main-bg: #212842;
+    --sponsor-bg: #1a2036;
+    --primary-color: #3d68e7;
+    --primary-color-rgb: 61, 104, 231;
+    --primary-light: #5a7fef;
+    --secondary-color: #6a11cb;
+    --text-color: #ffffff;
+    --text-secondary: #c3c8e6;
+    --success-color: #36e6a0;
+    --danger-color: #ff5252;
+    --divider-color: rgba(255, 255, 255, 0.08);
+    --item-hover: rgba(255, 255, 255, 0.08);
+    --item-active: rgba(61, 104, 231, 0.3);
+
+    /* Gradyanlar */
+    --gradient-primary: linear-gradient(135deg, #3d68e7, #6a11cb);
+}
+
+/* Genel Sayfa ve Scrollbar Ayarları */
+* {
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+.dashboard-page {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    background-color: var(--main-bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+}
+
+/* Ana Konteyner */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--background-secondary);
+    transition: padding-left 0.3s ease;
+}
+
+/* Chat Active State */
+.dashboard-container.chat-active .main-content {
+    flex-grow: 1;
+    /* Take up available space */
+}
+
+.dashboard-container.chat-active .right-sidebar-container {
+    display: none;
+    /* Hide sponsor bar */
+}
+
+/* Ana İçerik Alanı */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    overflow: hidden;
+    /* Prevent this from scrolling */
+}
+
+.friends-panel-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-primary);
+}
+
+.chat-panel {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    /* Take available space */
+    background-color: var(--background-primary);
+    overflow: hidden;
+    /* Let the child scroll */
+}
+
+.chat-panel.active {
+    display: flex;
+}
+
+/* =================================
+   Yardımcı (Utility) Sınıflar
+   ================================= */
+
+/* Bir elementi güvenilir bir şekilde gizlemek için kullanılır */
+.hidden {
+    display: none !important;
+}

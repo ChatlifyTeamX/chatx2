@@ -1,0 +1,105 @@
+<div id="profile-modal" class="modal-overlay">
+    <div class="modal-container">
+        <!-- Üst başlık çubuğu -->
+        <div class="modal-header">
+            <h3>Profil</h3>
+            <button class="close-modal-btn" title="Kapat"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- Ana içerik -->
+        <div class="modal-body">
+            <!-- Yatay düzende profil alanı -->
+            <div class="profile-horizontal-layout">
+
+                <!-- Sol Bölüm: Avatar ve temel bilgiler -->
+                <div class="profile-left-column">
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar">
+                            <img src="images/defaultavatar.png" alt="Profil Fotoğrafı">
+                        </div>
+                        <div class="status-indicator online"></div>
+                    </div>
+
+                    <div class="profile-name-container">
+                        <h2 class="profile-username">Kullanıcı Adı</h2>
+                        <div class="profile-tag">#1234</div>
+                    </div>
+
+                    <div class="profile-status">
+                        <span class="status-dot online"></span>
+                        <span class="status-text">Çevrimiçi</span>
+                    </div>
+
+                    <div class="profile-primary-actions">
+                        <button class="primary-action-btn message-btn">
+                            <i class="fas fa-comment-alt"></i>
+                            <span>Mesaj Gönder</span>
+                        </button>
+                        <button class="primary-action-btn call-btn">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Ara</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sağ Bölüm: Detaylı bilgiler -->
+                <div class="profile-right-column">
+                    <!-- Rozetler Bölümü -->
+                    <div class="profile-section badges-section">
+                        <div class="section-header">
+                            <i class="fas fa-award"></i>
+                            <h4>Rozetler</h4>
+                        </div>
+                        <div class="section-content">
+                            <div class="badges-container">
+                                <!-- Boş durum gösterimi -->
+                                <div class="badge-item empty-badge">
+                                    <div class="badge-placeholder"><i class="fas fa-plus"></i></div>
+                                    <span>Rozet Yok</span>
+                                </div>
+                                <!-- Diğer rozetler dinamik olarak eklenecek -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hakkında Bölümü -->
+                    <div class="profile-section about-section">
+                        <div class="section-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h4>Hakkında</h4>
+                        </div>
+                        <div class="section-content">
+                            <p class="bio">Bu kullanıcı henüz hakkında bir şey yazmamış.</p>
+                        </div>
+                    </div>
+
+                    <!-- Üyelik Bilgileri Bölümü -->
+                    <div class="profile-section membership-section">
+                        <div class="section-header">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h4>Üyelik Bilgisi</h4>
+                        </div>
+                        <div class="section-content">
+                            <div class="info-grid">
+                                <div class="info-label">Katılma Tarihi:</div>
+                                <div class="info-value member-since">1 Ocak 2024</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alt Eylemler -->
+                    <div class="profile-section secondary-actions">
+                        <button class="secondary-action-btn remove-friend-btn">
+                            <i class="fas fa-user-slash"></i>
+                            <span>Arkadaşlıktan Çıkar</span>
+                        </button>
+                        <button class="secondary-action-btn block-btn">
+                            <i class="fas fa-ban"></i>
+                            <span>Engelle</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

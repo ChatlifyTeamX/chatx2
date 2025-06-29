@@ -1,0 +1,1565 @@
+/*
+    Dashboard Panelleri için Stiller
+    - .friends-panel-container (Arkadaş Listesi ve Header)
+    - .chat-panel (Sohbet Penceresi)
+*/
+
+:root {
+    /* Mevcut değişkenlere ek olarak */
+    --success-color: #43b581;
+    --success-color-hover: #3ca374;
+    --success-color-rgb: 67, 181, 129;
+    --danger-color: #f04747;
+    --danger-color-hover: #d84040;
+    --danger-color-rgb: 240, 71, 71;
+    --primary-color-hover: #5865f0;
+}
+
+/* 1. Arkadaşlar Paneli (Friends Panel) */
+
+.friends-panel-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.friends-panel-container.hidden {
+    display: none;
+    /* JS ile sohbet açıldığında gizlenecek */
+}
+
+/* 2. Sohbet Paneli (Chat Panel) */
+.chat-panel {
+    display: none;
+    /* Varsayılan olarak gizli */
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-primary);
+}
+
+/* 3. Aktif Sohbet Durumu (Chat Active State) */
+.dashboard-container.chat-active .friends-panel-container {
+    display: none;
+}
+
+.dashboard-container.chat-active .chat-panel {
+    display: flex;
+}
+
+/* Panel Header (Tüm Arkadaşlar, Çevrimiçi sekmeleri vs.) */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--divider-color);
+    background-color: rgba(26, 32, 54, 0.6);
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.header-left .main-title {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.main-title i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.tabs-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.tabs-container {
+    display: flex;
+    gap: 8px;
+}
+
+.tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tab:hover {
+    background-color: var(--item-hover);
+}
+
+.tab.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.header-right .add-friend-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.add-friend-btn i {
+    margin-right: 6px;
+}
+
+/* Arkadaş Listesi Alanı */
+.friends-list-container {
+    padding: 0 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.friends-section-title {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.friends-section-title i {
+    margin-right: 8px;
+    font-size: 10px;
+}
+
+.friends-section-title .online-count,
+.friends-section-title .offline-count,
+.friends-section-title .pending-requests-count {
+    margin-left: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+/* Arkadaş Öğesi */
+.friend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.friend-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.friend-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.friend-avatar {
+    position: relative;
+}
+
+.friend-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.friend-avatar .status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+}
+
+.friend-details .friend-name {
+    font-weight: 600;
+    color: var(--text-normal);
+}
+
+.friend-details .friend-status-text {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.friend-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.friend-actions .btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.friend-actions .btn:hover {
+    background-color: var(--brand-color);
+    color: #fff;
+}
+
+/* Bekleyen Arkadaşlık İstekleri Stili */
+.friend-request-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.friend-request-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.friend-request-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.friend-request-actions .btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.friend-request-actions .accept-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.friend-request-actions .accept-btn:hover {
+    background-color: var(--success-color-hover);
+    transform: scale(1.1);
+}
+
+.friend-request-actions .reject-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.friend-request-actions .reject-btn:hover {
+    background-color: var(--danger-color-hover);
+    transform: scale(1.1);
+}
+
+/* Kabul edildi/reddedildi animasyonları */
+.friend-request-item.accepted {
+    background-color: rgba(var(--success-color-rgb), 0.1);
+    border-color: var(--success-color);
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.friend-request-item.rejected {
+    background-color: rgba(var(--danger-color-rgb), 0.1);
+    border-color: var(--danger-color);
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+/* Arkadaşlık isteği kabul edildi bildirimi */
+.friend-accepted-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 300px;
+}
+
+.friend-accepted-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-content i {
+    color: var(--success-color);
+    font-size: 18px;
+}
+
+.notification-content span {
+    font-weight: 500;
+    color: var(--text-normal);
+}
+
+.notification-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notification-actions .start-chat-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.notification-actions .start-chat-btn:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* Şık Sohbet Başlığı */
+.chat-header {
+    height: 70px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(33, 40, 66, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--divider-color);
+    flex-shrink: 0;
+}
+
+.chat-header-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+}
+
+.chat-avatar {
+    position: relative;
+}
+
+.chat-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.chat-avatar .status-dot {
+    border-width: 3px;
+    width: 16px;
+    height: 16px;
+    border-color: #212842
+}
+
+.chat-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-username {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.chat-status {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.chat-header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-header-actions .chat-action-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid transparent;
+}
+
+/* Header Buton Renkleri ve Hover Efektleri */
+.chat-header-actions .chat-action-btn[title="Sesli Arama"] {
+    color: var(--success-color);
+}
+
+.chat-header-actions .chat-action-btn[title="Görüntülü Arama"] {
+    color: var(--primary-color);
+}
+
+.chat-header-actions .chat-action-btn[title="Profil"] {
+    color: #a0a8d3;
+}
+
+.chat-header-actions .chat-action-btn[title="Sohbeti Kapat"] {
+    color: var(--danger-color);
+}
+
+.chat-header-actions .chat-action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Şık Mesaj Alanı */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-date-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 16px 0;
+    color: var(--text-secondary);
+}
+
+.message-date-divider::before,
+.message-date-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.message-date-divider span {
+    padding: 0 16px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.message-group {
+    display: flex;
+    margin-bottom: 4px;
+    align-items: flex-end;
+}
+
+.message-group-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.message-group-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-group-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+}
+
+.message-group-header {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+
+.message-author {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: 8px;
+    font-size: 15px;
+}
+
+.message-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.message-content {
+    background-color: #2a314e;
+    padding: 10px 14px;
+    border-radius: 18px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.message-content p {
+    margin: 0;
+}
+
+/* Gruplanmış mesajlar için köşe ayarı */
+.message-group-content .message-content {
+    border-bottom-left-radius: 4px;
+    margin-bottom: 2px;
+}
+
+.message-group-content .message-content:last-child {
+    border-bottom-left-radius: 18px;
+}
+
+/* Kendi Mesajların */
+.message-group.own-message {
+    align-self: flex-end;
+}
+
+.message-group.own-message .message-group-content {
+    align-items: flex-end;
+}
+
+.message-group.own-message .message-content {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-top-right-radius: 4px;
+}
+
+.message-group.own-message .message-group-content .message-content:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.message-group.own-message .message-group-avatar {
+    display: none;
+}
+
+.message-group.own-message .message-group-header {
+    justify-content: flex-end;
+}
+
+
+/* Şık Metin Giriş Alanı */
+.chat-input-area {
+    padding: 12px 20px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--divider-color);
+}
+
+.chat-attachments {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 2;
+}
+
+.chat-attachments .chat-attachment-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--item-hover);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-attachments .chat-attachment-btn:hover {
+    background-color: #fbfbfb;
+    color: white;
+}
+
+.chat-textbox {
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+    background-color: #2a314e;
+    border-radius: 20px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-textbox textarea {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 15px;
+    resize: none;
+    max-height: 100px;
+    padding: 10px 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.chat-textbox textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+.chat-actions .chat-action-btn,
+.chat-actions .chat-send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: color 0.2s;
+}
+
+.chat-actions .chat-action-btn:hover,
+.chat-actions .chat-send-btn:hover {
+    color: white;
+}
+
+.chat-actions .chat-send-btn {
+    color: var(--primary-color);
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.chat-actions .chat-send-btn:hover {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.chat-header .header-icons button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 15px;
+    transition: color 0.2s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.chat-header .header-icons button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chat-header .header-icons .call-btn {
+    color: #2ecc71;
+}
+
+.chat-header .header-icons .profile-btn {
+    color: #3498db;
+}
+
+.chat-header .header-icons .close-btn {
+    color: #e74c3c;
+}
+
+/* =================================
+   Profil Modalı (Yatay Tasarım)
+   ================================= */
+.profile-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.profile-modal-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.profile-modal-content.horizontal {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--dm-bg, #1a2036);
+    /* RENK SORUNU ÇÖZÜLDÜ */
+    width: 640px;
+    max-width: 95%;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: scale(0.95);
+    /* Başlangıçta küçük */
+    transition: transform 0.25s ease-in-out;
+}
+
+.profile-modal-overlay.is-visible .profile-modal-content.horizontal {
+    transform: scale(1);
+    /* Büyüyerek ekrana gelsin */
+}
+
+.profile-modal-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border: none;
+    color: #b9bbbe;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.profile-modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+/* Sol Panel */
+.profile-modal-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--server-bg, #161b2e);
+    /* RENK SORUNU ÇÖZÜLDÜ */
+    padding: 24px;
+    width: 240px;
+    flex-shrink: 0;
+    position: relative;
+    text-align: center;
+    border-right: 1px solid #212225;
+}
+
+.profile-modal-left .profile-modal-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 16px;
+}
+
+.profile-modal-left .profile-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid #36393f;
+}
+
+.status-dot-modal {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 5px solid #2f3136;
+    background-clip: content-box;
+    /* Önemli: Kenarlık içeri itilir */
+}
+
+.status-dot-modal.online {
+    background-color: #43b581;
+}
+
+.status-dot-modal.offline {
+    background-color: #747f8d;
+}
+
+.status-dot-modal.idle {
+    background-color: #faa61a;
+}
+
+.status-dot-modal.dnd {
+    background-color: #f04747;
+}
+
+
+.profile-modal-left .username {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.profile-modal-left .status-text {
+    font-size: 14px;
+    color: #b9bbbe;
+    margin-top: 4px;
+}
+
+/* Sağ Panel */
+.profile-modal-right {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    flex-grow: 1;
+    justify-content: flex-start;
+}
+
+.profile-modal-right .info-section {
+    margin-bottom: 20px;
+}
+
+.profile-modal-right .info-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.profile-modal-right .info-section h4 {
+    color: #b9bbbe;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+}
+
+.profile-modal-right .info-section p {
+    color: #dcddde;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.badges-section .badges-container {
+    display: flex;
+    gap: 8px;
+    min-height: 24px;
+    align-items: center;
+}
+
+.badges-container i {
+    font-size: 22px;
+    color: #5865f2;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.badges-container i:hover {
+    opacity: 1;
+}
+
+.profile-modal-right .actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #3c3f46;
+}
+
+.actions-section .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 0.5px;
+}
+
+.actions-section .btn i {
+    font-size: 16px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.actions-section .btn:hover i {
+    transform: scale(1.1);
+}
+
+.actions-section .btn.btn-primary {
+    background-color: #5865F2;
+    color: #fff;
+}
+
+.actions-section .btn.btn-primary:hover {
+    background-color: #4e5ad8;
+    box-shadow: 0 4px 10px rgba(88, 101, 242, 0.3);
+    transform: translateY(-2px);
+}
+
+.actions-section .btn.btn-danger {
+    background-color: #422026;
+    color: #da525e;
+    border-color: #5e2e35;
+}
+
+.actions-section .btn.btn-danger:hover {
+    background-color: #d83c4a;
+    color: #fff;
+    border-color: #d83c4a;
+    box-shadow: 0 4px 10px rgba(216, 60, 74, 0.3);
+    transform: translateY(-2px);
+}
+
+.actions-section .btn.btn-secondary {
+    background-color: #4f545c;
+    color: #dcddde;
+}
+
+.actions-section .btn.btn-secondary:hover {
+    background-color: #5d636b;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ==================
+   Chat Panel
+   ================== */
+
+/* Friends Panel - New Card Layout */
+.friends-content-container {
+    padding: 24px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.friend-card {
+    background: linear-gradient(145deg, rgba(55, 60, 102, 0.8), rgba(45, 50, 90, 0.9));
+    border-radius: 16px;
+    padding: 25px 20px 20px;
+    /* Üst kısmı banner için biraz daha fazla bıraktık */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Yeni banner elementi için stil */
+.friend-card .card-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(90deg, rgba(88, 101, 242, 0.3), rgba(88, 101, 242, 0.1));
+    z-index: 1;
+    transition: all 0.3s ease;
+    display: none;
+    /* Banner'ı gizliyoruz */
+}
+
+.friend-card:hover .card-banner {
+    height: 40px;
+    background: linear-gradient(90deg, rgba(88, 101, 242, 0.4), rgba(88, 101, 242, 0.2));
+    display: none;
+    /* Hover durumunda da gizli kalması için */
+}
+
+.friend-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    border-color: rgba(var(--primary-color-rgb), 0.3);
+}
+
+.friend-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.friend-card:hover::before {
+    opacity: 1;
+}
+
+.friend-card .card-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.friend-card .card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: padding-box var(--background-tertiary);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.friend-card:hover .card-avatar img {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.friend-card .card-avatar .status-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--main-bg);
+    background-color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.friend-card .card-avatar .status-dot.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+    animation: friendStatusPulse 2.5s infinite;
+}
+
+@keyframes friendStatusPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+.friend-card .card-username {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    /* Azaltıldı çünkü altına durum bilgisi gelecek */
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* Yeni durum metni için stil */
+.friend-card .card-status {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.friend-card:hover .card-username {
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.friend-card:hover .card-status {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.friend-card .card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.friend-card .card-action-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(4px);
+    margin: 0 5px;
+    opacity: 0.8;
+    transform-origin: center;
+}
+
+.friend-card:hover .card-action-btn {
+    opacity: 1;
+}
+
+.friend-card .card-action-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 5px 10px rgba(var(--primary-color-rgb), 0.4);
+}
+
+/* Özel buton stilleri */
+.friend-card .card-action-btn.message-btn:hover {
+    background-color: #5865F2;
+    /* Discord mavi rengi */
+}
+
+.friend-card .card-action-btn.call-btn:hover {
+    background-color: #3ba55c;
+    /* Yeşilimsi renk */
+}
+
+.friend-card .card-action-btn.profile-btn:hover {
+    background-color: #9b59b6;
+    /* Mor renk */
+}
+
+/* Pending Request Card Styles */
+.pending-requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.request-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-secondary);
+    padding: 18px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--background-tertiary);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.request-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary-color), var(--brand-color));
+    opacity: 0.7;
+}
+
+.request-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+.request-card-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.request-card-info img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--background-tertiary);
+    transition: all 0.3s ease;
+    object-fit: cover;
+}
+
+.request-card:hover .request-card-info img {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.request-card-info .user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.request-card-info .username {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.request-card-info .request-time {
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+.request-card-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.request-card-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.request-card-actions button i {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.request-card-actions button.accept-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.request-card-actions button.accept-btn:hover {
+    background-color: var(--success-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--success-color-rgb), 0.3);
+}
+
+.request-card-actions button.reject-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.request-card-actions button.reject-btn:hover {
+    background-color: var(--danger-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--danger-color-rgb), 0.3);
+}
+
+/* Disabled state for buttons */
+.request-card-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Processing state animation */
+.request-card-actions button.processing {
+    position: relative;
+    overflow: hidden;
+}
+
+.request-card-actions button.processing::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: processing 1.5s infinite;
+}
+
+@keyframes processing {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.empty-state i {
+    font-size: 64px;
+    margin-bottom: 24px;
+    color: #ffffff;
+    opacity: 0.8;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.empty-state p {
+    font-size: 1.2em;
+    max-width: 400px;
+    line-height: 1.6;
+}
+
+/* Bekleyen istekler başlık stili */
+.pending-requests-header {
+    margin: 0 auto 20px;
+    max-width: 800px;
+    padding: 0 10px;
+}
+
+.pending-requests-header h3 {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pending-requests-header h3 i {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* İşlem başarılı mesajı için stil */
+.action-success {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    padding: 10px 0;
+}
+
+.action-success i {
+    font-size: 1.2em;
+}
+
+.action-success i.fa-check-circle {
+    color: var(--success-color);
+}
+
+.action-success i.fa-times-circle {
+    color: var(--danger-color);
+}
+
+/* DM item styling - soldaki arkadaş butonu tasarımını iyileştirme */
+.dm-items .dm-item {
+    padding: 10px 14px;
+    margin: 4px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid transparent;
+    overflow: hidden;
+}
+
+.dm-items .dm-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(78, 115, 223, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+
+.dm-items .dm-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+    border-left: 3px solid var(--brand-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dm-items .dm-item:hover::before {
+    transform: translateX(0);
+}
+
+.dm-item-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.dm-items .dm-item:hover .dm-item-avatar {
+    border-color: var(--brand-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(var(--brand-color-rgb, 78, 115, 223), 0.3);
+}
+
+.dm-item-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.dm-item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    z-index: 1;
+    letter-spacing: 0.2px;
+}
+
+.dm-items .dm-item:hover .dm-item-name {
+    color: var(--text-color);
+    transform: translateX(3px);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.dm-item-avatar .status-dot {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--background-primary);
+    background-color: var(--text-muted);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.dm-item-avatar .status-dot.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
+    animation: dmStatusPulse 3s infinite;
+}
+
+@keyframes dmStatusPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+/* Chat Status Styling */
+.chat-header .chat-status {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.chat-header .chat-status.online {
+    color: #2ecc71;
+    text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+}
+
+/* Footer status dot */
+.dm-user-avatar .dm-status {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--background-primary);
+    background-color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.dm-user-avatar .dm-status.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
+    animation: footerStatusPulse 3s infinite;
+}
+
+@keyframes footerStatusPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}

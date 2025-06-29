@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatlify - Register</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/bg-animation.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left side: Form Area -->
+        <div class="auth-container">
+            <div class="auth-header">
+                <img src="assets/logo.png" alt="Chatlify Logo" class="logo">
+                <h1>Join Chatlify</h1>
+                <p>Create a new account in just a few steps</p>
+            </div>
+
+            <div class="form-container">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Username</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Email</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Avatar</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Password</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="5">
+                        <div class="step-number">5</div>
+                        <div class="step-label">Confirm</div>
+                    </div>
+                </div>
+
+                <div class="form-header">
+                    <h2 class="form-title">Create Account</h2>
+                    <p class="form-subtitle" id="stepSubtitle">Choose an awesome username that represents you!</p>
+                </div>
+
+                <form id="registerForm" novalidate>
+                    <!-- Step 1: Username -->
+                    <div class="step-content" data-step="1">
+                        <div class="input-group">
+                            <label for="username"><i class="fas fa-user"></i> Username</label>
+                            <input type="text" id="username" name="username"
+                                placeholder="Pick a username that reflects you" required>
+                            <div class="form-error" data-for="username"></div>
+                        </div>
+                        <button type="button" class="form-btn next-step-btn" data-next="2">Continue</button>
+                    </div>
+
+                    <!-- Step 2: Email -->
+                    <div class="step-content" data-step="2" style="display: none;">
+                        <div class="input-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="email" name="email" placeholder="We need a valid email for security"
+                                required>
+                            <div class="form-error" data-for="email"></div>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="form-btn prev-step-btn" data-prev="1">Back</button>
+                            <button type="button" class="form-btn next-step-btn" data-next="3">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Avatar -->
+                    <div class="step-content" data-step="3" style="display: none;">
+                        <div class="avatar-upload-container">
+                            <p class="avatar-info-title">Show Yourself!</p>
+                            <div class="avatar-preview" id="avatarPreview">
+                                <div class="avatar-preview-text">
+                                    <i class="fas fa-camera avatar-upload-icon"></i>
+                                    <span>Choose Profile Picture</span>
+                                </div>
+                                <img src="" alt="Avatar Preview" class="avatar-preview-img">
+                            </div>
+                            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                            <div class="form-error" data-for="avatar"></div>
+                            <p class="avatar-info">Optional - If you don't select a profile picture or the upload fails,
+                                a random avatar will be assigned to you.</p>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="form-btn prev-step-btn" data-prev="2">Back</button>
+                            <button type="button" class="form-btn next-step-btn" data-next="4">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Password -->
+                    <div class="step-content" data-step="4" style="display: none;">
+                        <div class="input-group">
+                            <label for="password"><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" id="password" name="password" placeholder="Create a strong password"
+                                required>
+                            <div class="form-error" data-for="password"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword"
+                                placeholder="Enter your password again" required>
+                            <div class="form-error" data-for="confirmPassword"></div>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="form-btn prev-step-btn" data-prev="3">Back</button>
+                            <button type="button" class="form-btn next-step-btn" data-next="5">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Confirm -->
+                    <div class="step-content" data-step="5" style="display: none;">
+                        <div class="final-step-container">
+                            <h3>Just One Last Step!</h3>
+                            <p>To use Chatlify, you need to accept the following terms:</p>
+                            <div class="form-options">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="terms" name="terms" required>
+                                    <label for="terms">I accept the <a href="/legal/terms-of-service.html"
+                                            target="_blank">Terms of Service</a> and <a
+                                            href="/legal/privacy-policy.html" target="_blank">Privacy
+                                            Policy</a>.</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="form-btn prev-step-btn" data-prev="4">Back</button>
+                            <button type="submit" id="submitBtn" class="form-btn">
+                                <span class="btn-text">Create My Account</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="form-footer">
+                    Already have an account? <a href="/login.html">Sign In</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side: Info Area -->
+        <div class="auth-info">
+            <div class="info-content">
+                <h2>Join Chatlify</h2>
+                <p>Connect with your friends, join communities, and meet new people.</p>
+
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h3>Secure Communication</h3>
+                            <p>Communicate securely with end-to-end encrypted messaging</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>Interest-Based Communities</h3>
+                            <p>Discover communities tailored to your interests</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h3>High-Quality Audio & Video</h3>
+                            <p>Experience crystal-clear voice and video calls</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div>
+                            <h3>Multi-Device Support</h3>
+                            <p>Continue seamless communication across all your devices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-footer">
+                <p>&copy; 2025 Chatlify. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/register.js"></script>
+</body>
+
+</html>
