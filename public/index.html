@@ -8,32 +8,49 @@
         content="Chatlify, arkadaşlarınızla ve topluluklarla iletişim kurmanın yeni ve heyecan verici bir yolunu sunar. Metin, sesli ve görüntülü sohbet özellikleri ile kesintisiz bir deneyim yaşayın.">
     <meta name="keywords" content="chat, iletişim, topluluk, sesli sohbet, görüntülü sohbet, arkadaşlar">
     <title>Chatlify - The New Dimension of Communication</title>
-    <link rel="icon" href="images/chatlifylogoweb.png" type="image/png">
+    <link rel="icon" href="../src/assets/images/chatlifylogoweb.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="../src/styles/style.css">
+    <link rel="stylesheet" href="../src/styles/styles.css">
+    <link rel="stylesheet" href="../src/styles/pages/bg-animation.css">
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+    </style>
+    <script src="../src/main.js" defer></script>
 </head>
 
 <body>
+    <!-- Arka plan animasyonu -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+    
     <header>
         <nav>
             <div class="logo">
-                <img src="assets/logo.png" alt="Chatlify Logo" class="header-logo-img">
+                <img src="../src/assets/logo.png" alt="Chatlify Logo" class="header-logo-img">
                 <span>CHATLIFY</span>
             </div>
             <div class="nav-links">
                 <a href="index.html" class="active">Home</a>
-                <a href="community.html">Community</a>
-                <a href="support.html">Support</a>
-                <a href="download.html">Download</a>
+                <a href="pages/community.html">Community</a>
+                <a href="pages/support.html">Support</a>
+                <a href="pages/download.html">Download</a>
             </div>
             <div class="nav-buttons">
-                <a href="login.html" class="login-btn">Sign In</a>
-                <a href="download.html" class="download-btn">Download Now</a>
+                <a href="pages/login.html" class="login-btn">Sign In</a>
+                <a href="pages/download.html" class="download-btn">Download Now</a>
             </div>
         </nav>
     </header>
@@ -45,13 +62,13 @@
                 <p>The easiest way to connect with friends, communities, and the world. Chat, voice chat, and video
                     calls - all in one platform!</p>
                 <div class="hero-buttons">
-                    <a href="download.html" class="download-btn"><i class="fas fa-download"></i> Download for
+                    <a href="pages/download.html" class="download-btn"><i class="fas fa-download"></i> Download for
                         Windows</a>
-                    <a href="login.html" class="browser-btn"><i class="fas fa-globe"></i> Open in Browser</a>
+                    <a href="pages/login.html" class="browser-btn"><i class="fas fa-globe"></i> Open in Browser</a>
                 </div>
             </div>
             <div class="hero-image">
-                <img src="images/dashboard-screenshot.svg" alt="Chatlify Dashboard" class="mockup-img">
+                <img src="../src/assets/images/dashboard-screenshot.svg" alt="Chatlify Dashboard" class="mockup-img">
                 <div class="floating-elements">
                     <div class="floating-element msg-1"><i class="fas fa-comment-alt"></i></div>
                     <div class="floating-element msg-2"><i class="fas fa-users"></i></div>
@@ -194,7 +211,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="assets/logo.png" alt="Chatlify Logo" class="footer-logo-img">
+                <img src="../src/assets/logo.png" alt="Chatlify Logo" class="footer-logo-img">
                 <span>CHATLIFY</span>
             </div>
             <div class="footer-links">
@@ -213,7 +230,7 @@
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">Careers</a></li>
                         <li><a href="#">Press Room</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="pages/contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -228,10 +245,10 @@
                 <div class="footer-column">
                     <h3>Legal</h3>
                     <ul>
-                        <li><a href="legal/terms-of-service.html">Terms of Service</a></li>
-                        <li><a href="legal/privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="legal/security.html">Security</a></li>
-                        <li><a href="legal/data-protection.html">Data Protection</a></li>
+                        <li><a href="pages/legal/terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="pages/legal/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="pages/legal/security.html">Security</a></li>
+                        <li><a href="pages/legal/data-protection.html">Data Protection</a></li>
                     </ul>
                 </div>
             </div>
@@ -248,7 +265,7 @@
                         class="fab fa-tiktok"></i></a>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Chatlify Inc. All rights reserved.</p>
+                <p>&copy; 2023 Chatlify. All rights reserved.</p>
             </div>
         </div>
     </footer>

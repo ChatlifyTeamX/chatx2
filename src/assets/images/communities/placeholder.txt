@@ -1,0 +1,3 @@
+Bu klasöre gaming-hub.png, gaming-hub-banner.jpg, code-world.png ve code-world-banner.jpg gibi topluluk görsellerini ekleyebilirsiniz.
+
+Görseller projeye eklendiğinde bu placeholder dosya silinebilir. 
