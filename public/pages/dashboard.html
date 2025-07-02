@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatlify - Dashboard</title>
+    <link rel="icon" href="../../src/assets/images/chatlifylogoweb.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+
+    <!-- CSS Dosyaları -->
+    <!-- Genel stil dosyaları -->
+    <link rel="stylesheet" href="../../src/styles/style.css">
+    <link rel="stylesheet" href="../../src/styles/pages/bg-animation.css">
+    
+    <!-- Dashboard özel stiller -->
+    <link rel="stylesheet" href="../../src/styles/pages/dashboard_main.css">
+    <link rel="stylesheet" href="../../src/styles/pages/dashboard_sidebar.css">
+    <link rel="stylesheet" href="../../src/styles/pages/dashboard_chat.css">
+    <link rel="stylesheet" href="../../src/styles/pages/dashboard_panels.css">
+    <link rel="stylesheet" href="../../src/styles/pages/dashboard_modals.css">
+    <link rel="stylesheet" href="../../src/styles/components/gif-styles.css">
+    <link rel="stylesheet" href="../../src/styles/components/modern-settings.css">
+
+    <style>
+        /* İnline acil CSS düzeltmeleri */
+        :root {
+            --server-bg: #161b2e;
+            --dm-bg: #1a2036;
+            --main-bg: #212842;
+            --sponsor-bg: #1a2036;
+            --primary-color: #3d68e7;
+            --primary-color-rgb: 61, 104, 231;
+            --primary-light: #5a7fef;
+            --secondary-color: #6a11cb;
+            --text-color: #ffffff;
+            --text-secondary: #c3c8e6;
+            --success-color: #36e6a0;
+            --danger-color: #ff5252;
+            --divider-color: rgba(255, 255, 255, 0.08);
+            --item-hover: rgba(255, 255, 255, 0.08);
+            --item-active: rgba(61, 104, 231, 0.3);
+            --background-primary: #212842;
+            --background-secondary: #1a2036;
+            --dm-width: 260px;
+            --server-width: 220px;
+            --right-sidebar-width: 260px;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        /* Yeni Chat Type Butonları - Kompakt ve yatay metin */
+        .chat-type-selector { display:flex; gap:10px; margin:10px 8px; }
+        .chat-type-btn { flex:1; text-align:center; padding:6px 0; border-radius:20px; font-size:12px; font-weight:600; color:#fff; cursor:pointer; transition:all .2s ease; background:rgba(255,255,255,0.06); }
+        .chat-type-btn.active { background:linear-gradient(135deg,#4c6ef5,#5c7cfa); }
+        .chat-type-btn:hover:not(.active) { background:rgba(255,255,255,0.12); }
+
+        /* Sponsor Badge Stil Güncellemesi */
+        .sponsor-badge {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transform: rotate(3deg);
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+        
+        /* Server sidebar'ın pozisyonunu ve stili */
+        #server-sidebar {
+            position: fixed;
+            left: -220px; /* Başlangıçta ekranın dışında */
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            height: 100%;
+            background-color: var(--server-bg, #161b2e);
+            z-index: 100;
+            transition: left 0.3s ease;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        #server-sidebar.visible {
+            left: 0;
+        }
+        
+        /* Direct messages sidebar geçiş efekti */
+        .direct-messages {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--dm-width);
+            transition: left 0.3s ease;
+            z-index: 50;
+        }
+        
+        /* Sidebar açıkken DM sidebar'ın pozisyonu */
+        .dashboard-container.sidebar-open .direct-messages { left: var(--server-width); }
+        
+        /* Ana içeriğin düzeni - yeniden düzenlendi */
+        .main-content {
+            position: fixed;
+            left: var(--dm-width);
+            right: var(--right-sidebar-width);
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            padding: 0;
+        }
+        
+        /* Sidebar açıkken ana içeriğin pozisyonu */
+        .dashboard-container.sidebar-open .main-content { left: calc(var(--dm-width) + var(--server-width)); }
+        
+        /* Friends panel içeriğini korumak için */
+        .friends-panel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        /* Header kısmının sabit kalması için */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            width: 100%;
+            height: 70px;
+            flex-wrap: nowrap;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color, #1a1f36);
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 160px; /* Minimum genişlik belirleme */
+        }
+        
+        .header-left i {
+            font-size: 18px;
+            color: #5c7cfa;
+            margin-right: 4px;
+        }
+        
+        .main-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Sekme butonları */
+        .tabs-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            margin: 0 20px;
+            padding-right: 80px; /* Sağa kaymasını sağlamak için ekstra padding */
+        }
+        
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .tab {
+            background-color: transparent;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            color: rgba(255,255,255,0.7);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .tab:hover {
+            color: rgba(255,255,255,0.9);
+            background-color: rgba(255,255,255,0.05);
+        }
+        
+        .tab.active {
+            color: #fff;
+            background-color: #4c6ef5;
+            box-shadow: 0 3px 10px rgba(76, 110, 245, 0.25);
+        }
+        
+        /* Sponsor sidebar geçiş efekti */
+        .right-sidebar-container {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px;
+            transition: right 0.3s ease;
+            z-index: 40;
+        }
+        
+        /* Sidebar içerik düzeni */
+        .server-sidebar-inner {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 12px 8px;
+        }
+        
+        /* Sidebar logo alanı */
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logo-icon img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .logo-text {
+            margin-left: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Sidebar bölüm başlıkları */
+        .sidebar-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin: 10px 0 8px 10px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        /* Sidebar alt kısmı */
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+        }
+        
+        /* Yeni sidebar buton stilleri */
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            margin: 6px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .sidebar-item:hover::before {
+            left: 100%;
+        }
+        
+        .sidebar-item-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            margin-right: 10px;
+            background: linear-gradient(135deg, var(--accent-color, #7289da), var(--accent-secondary, #4e5d94));
+            transition: all 0.3s ease;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .sidebar-item.add-server .sidebar-item-icon {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        }
+        
+        .sidebar-item.shop .sidebar-item-icon {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+        
+        .sidebar-item.settings .sidebar-item-icon {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+        
+        .sidebar-item-text {
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+        
+        .sidebar-item:hover .sidebar-item-text {
+            color: #fff;
+        }
+        
+        /* İkon büyüme efektini kaldırdık, sadece ayarlar için özel dönme animasyonu ekledik */
+        .sidebar-item:hover .sidebar-item-icon {
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Ayarlar butonu için hover durumunda özel dönme animasyonu */
+        .sidebar-item.settings:hover .sidebar-item-icon i {
+            animation: rotate360 1.5s linear infinite;
+        }
+        
+        @keyframes rotate360 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Plus icon fix - tam kare görünüm sağlıyor */
+        .sidebar-item.add-server .sidebar-item-icon i {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        /* Aktif sidebar elementi için stil */
+        .sidebar-item.active {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Sidebar item tıklama animasyonu */
+        .sidebar-item.clicked .sidebar-item-icon {
+            animation: pulse 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Header içindeki elemanların kaymasını önle */
+        .header-left, .header-right {
+            flex-shrink: 0;
+            white-space: nowrap;
+            z-index: 5;
+        }
+        
+        /* Arkadaş Ekle butonunun kaymasını önlemek için */
+        .header-right {
+            min-width: 160px; /* Butonun sığacağı minimum genişlik */
+        }
+        
+        .header-right .add-friend-btn {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            padding: 10px 18px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #4c6ef5, #3b5bdb);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(76, 110, 245, 0.25);
+            letter-spacing: 0.3px;
+            border: none;
+            outline: none;
+            gap: 8px;
+        }
+        
+        .header-right .add-friend-btn i {
+            font-size: 15px;
+            margin-right: 2px;
+        }
+        
+        .header-right .add-friend-btn:hover {
+            background: linear-gradient(135deg, #5c7cfa, #4263eb);
+            box-shadow: 0 6px 15px rgba(76, 110, 245, 0.35);
+            transform: translateY(-1px);
+        }
+        
+        .header-right .add-friend-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(76, 110, 245, 0.2);
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Animasyonlu Arkaplan -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Server Sidebar (Gizli başlangıç durumu) -->
+        <div id="server-sidebar">
+            <div class="server-sidebar-inner">
+                <div class="sidebar-logo">
+                    <div class="logo-icon"><img src="../../src/assets/images/chatlifylogoweb.png" alt="Chatlify Logosu"></div>
+                    <div class="logo-text">Chatlify</div>
+                </div>
+                <div class="sidebar-section-title">Sunucular</div>
+                <div class="sidebar-servers">
+                    <!-- Sunucu listesi JS ile doldurulacak -->
+                </div>
+                <div class="sidebar-bottom">
+                    <div class="sidebar-item add-server">
+                        <div class="sidebar-item-icon"><i class="fas fa-plus"></i></div>
+                        <div class="sidebar-item-text">Sunucu İşlemleri</div>
+                    </div>
+                    <div class="sidebar-item shop">
+                        <div class="sidebar-item-icon"><i class="fas fa-store"></i></div>
+                        <div class="sidebar-item-text">Mağaza</div>
+                    </div>
+                    <div class="sidebar-item settings">
+                        <div class="sidebar-item-icon"><i class="fas fa-cog"></i></div>
+                        <div class="sidebar-item-text">Ayarlar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Direct Messages Sidebar -->
+        <div class="direct-messages">
+            <div class="dm-header">
+                <button class="sidebar-toggle-btn" id="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+                <div class="dm-header-title">Özel Mesajlar</div>
+            </div>
+            <div class="dm-search"><i class="fas fa-search"></i><input type="text" placeholder="Sohbetlerde Ara"></div>
+            
+            <!-- Kompakt Chat Type Selector -->
+            <div class="chat-type-selector">
+                <div class="chat-type-btn active" id="normal-chat-btn">Normal Sohbet</div>
+                <div class="chat-type-btn" id="group-chat-btn">Grup Sohbeti</div>
+            </div>
+            
+            <div class="dm-groups">
+                <div class="dm-group" id="friends-group">
+                    <div class="dm-group-header">
+                        <div class="dm-group-title">Arkadaşlar</div>
+                        <div class="dm-group-toggle"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="dm-items"><!-- Arkadaşlar JS ile eklenecek --></div>
+                </div>
+            </div>
+            <div class="dm-footer">
+                <div class="dm-user">
+                    <div class="dm-user-avatar"><img src="../../src/assets/images/defaultavatar.png" alt="Kullanıcı">
+                        <div class="dm-status online"></div>
+                    </div>
+                    <div class="dm-user-info">
+                        <div class="dm-user-name">Yükleniyor...</div>
+                        <div class="dm-user-status">Çevrimiçi</div>
+                    </div>
+                </div>
+                <div class="dm-user-controls">
+                    <div class="dm-user-control logout-icon logout-button" title="Çıkış Yap"><i
+                            class="fas fa-sign-out-alt"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ana İçerik Alanı -->
+        <div class="main-content">
+            <div class="friends-panel-container">
+                <div class="dashboard-header">
+                    <div class="header-left">
+                        <div class="main-title"><i class="fas fa-user-friends"></i><span>Arkadaşlar</span></div>
+                    </div>
+                    <div class="tabs-wrapper">
+                        <div class="tabs-container">
+                            <button class="tab active" data-tab="all">Tüm Arkadaşlar</button>
+                            <button class="tab" data-tab="online">Çevrimiçi</button>
+                            <button class="tab" data-tab="pending">Bekleyen</button>
+                        </div>
+                    </div>
+                    <div class="header-right"><button class="add-friend-btn" id="add-friend-button"><i
+                                class="fas fa-user-plus"></i><span>Arkadaş Ekle</span></button></div>
+                </div>
+                <div class="friends-content-container">
+                    <!-- Bu alan, yeni JavaScript render fonksiyonu tarafından doldurulacak -->
+                    <!-- Örnek: Arkadaş kartları, bekleyen istekler, yükleniyor animasyonu vb. -->
+                </div>
+            </div>
+
+            <div class="chat-panel hidden">
+                <div class="chat-header">
+                    <div class="chat-header-user">
+                        <div class="chat-avatar"><img src="../../src/assets/images/defaultavatar.png" alt="Kullanıcı"><span
+                                class="status-dot online"></span></div>
+                        <div class="chat-user-info">
+                            <div class="chat-username">Kullanıcı Adı</div>
+                            <div class="chat-status">Çevrimiçi</div>
+                        </div>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button class="chat-action-btn" title="Sesli Arama"><i class="fas fa-phone-alt"></i></button>
+                        <button class="chat-action-btn" title="Görüntülü Arama"><i class="fas fa-video"></i></button>
+                        <button class="chat-action-btn profile-btn" title="Profil"><i class="fas fa-user"></i></button>
+                        <button class="chat-action-btn chat-close-btn" title="Sohbeti Kapat"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="chat-messages">
+                    <div class="message-date-divider"><span>Bugün</span></div>
+
+                    <div class="message-group">
+                        <div class="message-group-avatar"><img
+                                src="https://via.placeholder.com/100/3498db/ffffff?text=A" alt="Ahmet"></div>
+                        <div class="message-group-content">
+                            <div class="message-group-header"><span class="message-author">Ahmet Yılmaz</span><span
+                                    class="message-time">12:34</span></div>
+                            <div class="message-content">
+                                <p>Merhaba! Nasılsın?</p>
+                            </div>
+                            <div class="message-content">
+                                <p>Yeni projemiz hakkında konuşabilir miyiz?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-group own-message">
+                        <div class="message-group-content">
+                            <div class="message-group-header"><span class="message-author">Sen</span><span
+                                    class="message-time">12:35</span></div>
+                            <div class="message-content">
+                                <p>İyiyim teşekkürler, sen nasılsın?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-group">
+                        <div class="message-group-avatar"><img
+                                src="https://via.placeholder.com/100/3498db/ffffff?text=A" alt="Ahmet"></div>
+                        <div class="message-group-content">
+                            <div class="message-group-header"><span class="message-author">Ahmet Yılmaz</span><span
+                                    class="message-time">12:40</span></div>
+                            <div class="message-content">
+                                <p>Arayüz tasarımını tamamladım, sana göstermek istiyorum.</p>
+                                <div class="message-attachment">
+                                    <div class="attachment-icon"><i class="fas fa-file-image"></i></div>
+                                    <div class="attachment-details">
+                                        <div class="attachment-name">UI_Design.png</div>
+                                        <div class="attachment-size">1.2 MB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <div class="chat-attachments">
+                        <button class="chat-attachment-btn file-upload-btn" title="Görsel Ekle"><i
+                                class="fas fa-paperclip"></i></button>
+                        <input type="file" id="image-upload" accept="image/png, image/jpeg, image/jpg, image/gif"
+                            style="display: none;" />
+                        <button class="chat-attachment-btn emoji-btn" title="Emoji Ekle"><i
+                                class="fas fa-smile"></i></button>
+                        <button class="chat-attachment-btn gif-btn" title="GIF Ekle"><i
+                                class="fas fa-images"></i></button>
+                    </div>
+                    <div class="chat-textbox">
+                        <textarea placeholder="Bir mesaj yazın..." rows="1"></textarea>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="chat-send-btn" title="Gönder"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+
+                    <!-- Emoji Panel -->
+                    <div class="emoji-panel">
+                        <div class="emoji-panel-header">
+                            <input type="text" placeholder="Emoji ara..." class="emoji-search">
+                        </div>
+                        <div class="emoji-panel-content">
+                            <!-- Emojiler JS ile eklenecek -->
+                        </div>
+                    </div>
+
+                    <!-- GIF Panel -->
+                    <div class="gif-panel">
+                        <div class="gif-panel-header">
+                            <input type="text" placeholder="GIF ara..." class="gif-search">
+                        </div>
+                        <div class="gif-panel-content">
+                            <!-- GIF'ler JS ile eklenecek -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Kenar Çubukları -->
+        <div class="right-sidebar-container">
+            <!-- Sponsorlu Sunucular -->
+            <div class="sponsor-sidebar">
+                <div class="sponsor-header">
+                    <div class="sponsor-header-title">Sponsor Sunucular</div>
+                </div>
+                <div class="sponsor-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Sunucu Ara">
+                </div>
+                <div class="sponsor-servers">
+                    <!-- Sponsor sunucular burada gösterilecek -->
+                    <div class="sponsor-server">
+                        <div class="sponsor-badge">SPONSOR</div>
+                        <div class="sponsor-server-icon"><img src="https://picsum.photos/seed/tech/100" alt="Tech Zone">
+                        </div>
+                        <div class="sponsor-server-info">
+                            <div class="sponsor-server-name">Tech Zone</div>
+                            <div class="sponsor-server-desc">Yazılım, donanım ve en yeni teknolojiler hakkında sohbet
+                                edebileceğiniz bir topluluk.</div>
+                            <div class="sponsor-server-meta">
+                                <div class="sponsor-server-members"><i class="fas fa-user"></i> 18,743</div>
+                                <div class="sponsor-server-category"><i class="fas fa-microchip"></i> Teknoloji</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sponsor-server">
+                        <div class="sponsor-badge">SPONSOR</div>
+                        <div class="sponsor-server-icon"><img src="https://picsum.photos/seed/art/100"
+                                alt="Art & Design"></div>
+                        <div class="sponsor-server-info">
+                            <div class="sponsor-server-name">Art & Design</div>
+                            <div class="sponsor-server-desc">Tasarımcılar, çizerler ve sanatçılar için bir buluşma
+                                noktası. Eserlerinizi paylaşın!</div>
+                            <div class="sponsor-server-meta">
+                                <div class="sponsor-server-members"><i class="fas fa-user"></i> 12,321</div>
+                                <div class="sponsor-server-category"><i class="fas fa-palette"></i> Sanat</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sponsor-server">
+                        <div class="sponsor-badge">SPONSOR</div>
+                        <div class="sponsor-server-icon"><img src="https://picsum.photos/seed/music/100"
+                                alt="Music Fest"></div>
+                        <div class="sponsor-server-info">
+                            <div class="sponsor-server-name">Music Fest</div>
+                            <div class="sponsor-server-desc">Her türden müzik tutkununun bir araya geldiği, yeni
+                                şarkılar keşfettiği canlı bir platform.</div>
+                            <div class="sponsor-server-meta">
+                                <div class="sponsor-server-members"><i class="fas fa-user"></i> 32,150</div>
+                                <div class="sponsor-server-category"><i class="fas fa-music"></i> Müzik</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modallar için Konteynerler -->
+    <div id="add-friend-modal-container"></div>
+    <div id="join-server-modal-container"></div>
+    <div id="profile-modal-container"></div>
+
+    <!-- Gerekli Scriptler -->
+    <script src="../../src/utils/logger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script src="../../src/libs/snowflake-id.min.js"></script>
+    
+    <!-- JavaScript Modülleri -->
+    <script type="module">
+        // Uyumluluk kontrolü
+        if (!window.structuredClone) {
+            window.structuredClone = function(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            };
+        }
+        
+        // Modülleri içe aktar
+        import { supabase } from "../../src/pages/auth/auth_config.js";
+        
+        // DEBUG: Dashboard.js yüklenmeden önce sidebar elementlerini kontrol et
+        console.log("HTML DEBUG: Pre-dashboard.js sidebar elements:", {
+            sidebarToggleBtn: document.getElementById('sidebar-toggle-btn'),
+            serverSidebar: document.getElementById('server-sidebar')
+        });
+        
+        // Önce sidebar toggle işlevini ayarlayalım, dashboard.js yüklenmeden önce
+        document.addEventListener('DOMContentLoaded', function() {
+            // Server Sidebar Toggle - Basit bir yaklaşım
+            const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+            const serverSidebar = document.getElementById('server-sidebar');
+            const dashboardContainer = document.querySelector('.dashboard-container');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (!sidebarToggleBtn || !serverSidebar) {
+                console.error("CRITICAL: Sidebar elements not found!", {
+                    sidebarToggleBtn: !!sidebarToggleBtn,
+                    serverSidebar: !!serverSidebar
+                });
+                return;
+            }
+            
+            console.log("HTML: Sidebar elements found and attaching event listeners");
+            
+            // Debug için doğrudan erişilebilir yap
+            window.toggleSidebar = function() {
+                serverSidebar.classList.toggle('visible');
+                dashboardContainer.classList.toggle('sidebar-open');
+                
+                // Doğrudan stil değişiklikleri
+                serverSidebar.style.left = serverSidebar.classList.contains('visible') ? '0' : '-220px';
+                
+                // Ekranı yeniden boyutlandırma tetikleyicisi
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 300);
+                
+                console.log('Sidebar toggled via global function');
+            };
+            
+            // Normal tıklama işleyicisi - özellikle buraya ekstra özen gösteriyoruz
+            sidebarToggleBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                const isVisible = serverSidebar.classList.toggle('visible');
+                dashboardContainer.classList.toggle('sidebar-open');
+                
+                // Doğrudan stil değişiklikleri
+                serverSidebar.style.left = isVisible ? '0' : '-220px';
+                
+                // Ekranı yeniden boyutlandırma tetikleyicisi
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 300);
+                
+                console.log('HTML: Sidebar toggled by button click, now visible:', isVisible);
+            });
+            
+            // Dışa tıklama ile kapatma
+            document.addEventListener('click', function(event) {
+                if (serverSidebar.classList.contains('visible') && 
+                    !serverSidebar.contains(event.target) &&
+                    event.target !== sidebarToggleBtn) {
+                    serverSidebar.classList.remove('visible');
+                    dashboardContainer.classList.remove('sidebar-open');
+                    serverSidebar.style.left = '-220px';
+                    
+                    // Ekranı yeniden boyutlandırma tetikleyicisi
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                    }, 300);
+                    
+                    console.log('HTML: Sidebar closed by outside click');
+                }
+            });
+            
+            // Sidebar içine tıklama olayını engelleme
+            serverSidebar.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+            
+            // Yeni Chat Type Selector Animasyonu
+            const normalChatBtn = document.getElementById('normal-chat-btn');
+            const groupChatBtn = document.getElementById('group-chat-btn');
+            const chatTypeSelector = document.querySelector('.chat-type-selector');
+            
+            if (normalChatBtn && groupChatBtn) {
+                normalChatBtn.addEventListener('click', function() {
+                    normalChatBtn.classList.add('active');
+                    groupChatBtn.classList.remove('active');
+                    chatTypeSelector.classList.remove('group-active');
+                });
+                
+                groupChatBtn.addEventListener('click', function() {
+                    groupChatBtn.classList.add('active');
+                    normalChatBtn.classList.remove('active');
+                    chatTypeSelector.classList.add('group-active');
+                });
+            }
+            
+            // Sponsor kartları için hover efekti
+            const sponsorServers = document.querySelectorAll('.sponsor-server');
+            sponsorServers.forEach(server => {
+                server.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.2)';
+                });
+                
+                server.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // Sidebar butonları için gelişmiş animasyon efektleri
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Tıklama efekti ekle
+                    this.classList.add('clicked');
+                    
+                    // Efekti bir süre sonra kaldır
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 300);
+                });
+                
+                // Hover animasyonu - büyüme efektini kaldırıyoruz
+                item.addEventListener('mouseenter', function() {
+                    // Büyüme animasyonu kaldırıldı
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    // Büyüme animasyonu kaldırıldı
+                });
+            });
+            
+            console.log('HTML: Initial sidebar setup complete - all sidebar event listeners attached');
+        });
+        
+        // Şimdi dashboard.js yükleyelim
+        import "../../src/pages/dashboard/dashboard.js";
+    </script>
+    
+    <script src="../../src/components/settings.js"></script>
+    <script src="../../src/components/settings_interactive.js"></script>
+    <script src="../../src/components/chat/voice-call.js" type="module"></script>
+    <script src="../../src/utils/loading-screen.js"></script>
+
+</body>
+
+</html>

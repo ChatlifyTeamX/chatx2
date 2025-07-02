@@ -1,0 +1,71 @@
+/* Animasyon Arkaplanı - Basitleştirilmiş */
+
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(125deg, #161b2e 0%, #212842 100%);
+}
+
+/* Yıldızlar */
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: #000 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-opacity='0.3' stroke-width='1'%3E%3Ccircle r='2' cx='100' cy='100'/%3E%3Ccircle r='1.5' cx='200' cy='50'/%3E%3Ccircle r='1' cx='300' cy='150'/%3E%3Ccircle r='2' cx='400' cy='250'/%3E%3Ccircle r='1.5' cx='500' cy='100'/%3E%3Ccircle r='1' cx='600' cy='200'/%3E%3Ccircle r='2' cx='700' cy='300'/%3E%3Ccircle r='1.5' cx='50' cy='350'/%3E%3Ccircle r='1' cx='150' cy='450'/%3E%3Ccircle r='2' cx='250' cy='550'/%3E%3Ccircle r='1.5' cx='350' cy='400'/%3E%3Ccircle r='1' cx='450' cy='500'/%3E%3Ccircle r='2' cx='550' cy='600'/%3E%3Ccircle r='1.5' cx='650' cy='450'/%3E%3Ccircle r='1' cx='750' cy='550'/%3E%3C/g%3E%3C/svg%3E") repeat top center;
+    animation: move-stars 200s linear infinite;
+    z-index: -3;
+    opacity: 0.5;
+}
+
+/* Işıltı */
+.twinkling {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+    background-size: 400px 400px;
+    animation: move-twinkle 100s linear infinite;
+    z-index: -2;
+    opacity: 0.2;
+}
+
+/* Bulutlar */
+.clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 600 600'%3E%3Cpath fill='%23FFFFFF' fill-opacity='0.05' d='M100,200 Q150,100 200,200 Q250,100 300,200 Q350,100 400,200 Q450,100 500,200 L500,500 L100,500 Z'/%3E%3C/svg%3E") repeat-x;
+    background-size: 1000px 1000px;
+    animation: move-clouds 150s linear infinite;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+/* Animasyonlar */
+@keyframes move-stars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+}
+
+@keyframes move-twinkle {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+}
+
+@keyframes move-clouds {
+    from { transform: translateX(0); }
+    to { transform: translateX(-1000px); }
+} 
